@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="mapper.Tc">
+  
+  		<insert id="addTc">
+  			insert into tc values(#{teacherid},#{cid})
+  		</insert>
+  		
+  		<insert id="distribution">
+  			insert into tc values(#{teacherid},#{cid},#{Classid})
+  		</insert>
+		<select id="distributioncourse" resultType="pojo.TC">
+			select cou.cname,cl.Classname,t.tname,t.teacherid,cou.cid,cl.Classid
+			from classes cl,tc c,course cou,teacher t 
+			where cl.Classid=c.Classid and cou.cid=c.cid and t.teacherid=c.teacherid limit #{0},#{1}
+		</select>
+		
+		<select id="tccount" resultType="Integer">
+			select count(*)
+			from classes cl,tc c,course cou,teacher t 
+			where cl.Classid=c.Classid and cou.cid=c.cid and t.teacherid=c.teacherid
+		</select>
+		
+		<delete id="closedistributioncourse">
+			delete from tc where teacherid=#{2} and cid =#{0} and Classid=#{1}
+		</delete>
+  </mapper>

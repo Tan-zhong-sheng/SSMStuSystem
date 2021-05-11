@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.Teacher">
+	<!-- teacherid int auto_increment primary key, tname varchar(15) not null, 
+		tpwd varchar(20) not null, sal int not null, cid int not null, -->
+
+	<resultMap type="pojo.teacher" id="Teacher">
+		<id property="teacherid" column="teacherid" />
+		<result property="tname" column="tname" />
+		<result property="tpwd" column="tpwd" />
+		<result property="sal" column="sal" />
+		<result property="Entrytime" column="Entrytime"/>
+		<result property="major" column="major"/>
+		<result property="QQ" column="QQ"/>
+		<result property="phone" column="phone"/>
+		<result property="photo" column="photo"/>
+		<collection property="cou" ofType="pojo.course">
+			<id column="cid" property="cid"/>
+			<result property="cname" column="cname"/>
+			<result property="CourseRoom" column="CourseRoom"/>
+			<result property="major" column="major"/>
+		</collection>
+	</resultMap>
+	<insert id="Tinsert" parameterType="pojo.teacher"
+		useGeneratedKeys="true" keyProperty="teacherid">
+		insert into
+		teacher(tname,tpwd,sal,Entrytime,major,phone,QQ)
+		values(#{tname},#{tpwd},#{sal},#{Entrytime},#{major},#{phone},#{QQ})
+	</insert>
+	<select id="SelectTeacher" resultMap="Teacher">
+		select * from teacher where
+		
+		teacherid=#{teacherid}
+	</select>
+	<select id="selectlogin" resultMap="Teacher">
+		select * from teacher where
+		teacherid=#{0} and tpwd=#{1}
+	</select>
+	<update id="updatesal">
+		update teacher
+		<set>
+			sal=#{1}
+		</set>
+		where teacherid=#{0}
+	</update>
+	<select id="selectall" resultMap="Teacher" parameterType="Integer">
+		select * from teacher ORDER BY teacherid DESC limit #{0},#{1} 
+	</select>
+
+	<select id="selectcount" resultType="Integer">
+		select count(*) from teacher
+	</select>
+	
+    <delete id="Delete">
+		delete from teacher
+		<where>
+			teacherid=#{teacherid}
+		</where>
+	</delete>
+	<update id="updatepwd">
+		update teacher set tpwd =#{tpwd} where teacherid=#{teacherid}
+	</update>
+<!-- 	<update id="Terchangepwd">
+		update teacher set tpwd =#{1} where teacherid=#{0}
+	</update> -->
+	
+	<update id="Teacherupdate">
+		update teacher set tpwd=#{pwd1} where tpwd=#{pwd} and teacherid=#{teacherid}
+	</update>
+	  <select id="SelectCourse" resultType="pojo.TC">
+  			select * from tc a,course b ,teacher c,classes d where a.teacherid = c.teacherid and a.cid = b. cid and a.Classid=d.Classid and c.teacherid=#{teacherid}
+  	</select>
+  	<insert id="TercherAddScope">
+  		insert into scope values(#{scope},#{cid},#{stuid},#{teacherid})
+  	</insert>
+  	
+  	<select id="SelectTid" resultMap="Teacher">
+  		select * from teacher
+  	</select>
+  	
+  <select id="TeacherConditional" resultType="pojo.teacher">
+  		select * from teacher
+  		<where>
+  			<if test="teacherid!=null and teacherid!=''">
+  				teacherid = #{teacherid}
+  			</if>
+  			<if test="tname!=null and tname!=''">
+  				and tname = #{tname}
+  			</if>
+  			<if test="sal!=null and sal!=''">
+  				and sal = #{sal}
+  			</if>
+  			<if test="major!=null and major!=''">
+  				and major = #{major}
+  			</if>
+  			limit #{start},#{end}
+  		</where>
+  	</select>
+  	
+  	<select id="CountConditional" resultType="Integer">
+  		select count(*) from teacher 
+  		 <where>
+  			<if test="teacherid!=null and teacherid!=''">
+  				teacherid = #{teacherid}
+  			</if>
+  			<if test="tname!=null and tname!=''">
+  				and tname = #{tname}
+  			</if>
+  			<if test="sal!=null and sal!=''">
+  				and sal = #{sal}
+  			</if>
+  			<if test="major!=null and major!=''">
+  				and major = #{major}
+  			</if>
+  		</where>
+  	</select>
+  	
+  	<select id="CheckPwd" resultType="String">
+  		select tpwd from teacher where teacherid=#{teacherid}
+  	</select>
+  	
+  	<update id="updatephone">
+  		update teacher set phone = #{phone} where teacherid=#{teacherid}
+  	</update>
+  	
+  	<update id="updateqq">
+  		update teacher set QQ = #{QQ} where teacherid=#{teacherid}
+  	</update>
+  	
+  	<update id="updatephoto">
+  		update teacher set photo = #{1} where teacherid=#{0}
+  	</update>
+  	
+  	<select id="selectphoto" resultType="String">
+  		select photo from teacher where teacherid=#{teacherid}
+  	</select>
+  	
+ <!--  	<update id="updatefaceid">
+  		update teacher set faceid=#{0} where teacherid=#{1}
+  	</update> -->
+  	<insert id="addstudydata" parameterType="pojo.Studydata" useGeneratedKeys="true" keyProperty="id">
+  		insert into studydata(teacherid,address,filename) values(#{teacherid},#{address},#{filename})
+  	</insert>
+</mapper>

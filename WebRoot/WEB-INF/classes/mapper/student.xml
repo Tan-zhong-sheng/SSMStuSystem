@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.Student">
+	<!-- private Integer stuid; private String name; private String pwd; private 
+		Long phone; private String sex; @DateTimeFormat(pattern="yyyy-MM-dd") private 
+		Date age; private String Nation; private course cou; -->
+	<resultMap type="pojo.student" id="student">
+		<id column="stuid" property="stuid" />
+		<result property="name" column="name" />
+		<result property="pwd" column="pwd" />
+		<result property="phone" column="phone" />
+		<result property="sex" column="sex" />
+		<result property="age" column="age" />
+		<result property="Nation" column="Nation" />
+		<result property="education" column="education" />
+		<result property="major" column="major" />
+		<result property="photo" column="photo" />
+		<result property="Enrolmenttime" column="Enrolmenttime" />
+		<result property="grade" column="grade" />
+		<result property="Classid" column="Classid" />
+		<collection property="cou" ofType="pojo.course">
+			<id column="cid" property="cid" />
+			<result property="cname" column="cname" />
+			<result property="CourseRoom" column="CourseRoom" />
+			<result property="major" column="major" />
+		</collection>
+	</resultMap>
+	<select id="login" resultMap="student">
+		select * from student
+		<where>
+			stuid= #{0} and pwd =#{1}
+		</where>
+	</select>
+	<insert id="insert" parameterType="pojo.student"
+		useGeneratedKeys="true" keyProperty="stuid">
+		insert into
+		student(name,pwd,age,sex,Nation,education,major,Enrolmenttime,grade,Classid)
+		values(#{name},#{pwd},#{age},#{sex},#{Nation},#{education},#{major},#{Enrolmenttime},#{grade},#{Classid})
+	</insert>
+	<select id="Ajax" resultMap="student">
+		select * from student where
+		stuid=#{stuid}
+	</select>
+	<update id="ResetUser">
+		update student
+		<set> pwd =#{pwd}</set>
+		<where>
+			stuid =#{stuid}
+		</where>
+	</update>
+	<delete id="Delete">
+		delete from student
+		<where>
+			stuid=#{stuid}
+		</where>
+	</delete>
+
+	<update id="updatepwd" parameterType="pojo.student">
+		update student
+		<set>
+			pwd=#{pwd1}
+		</set>
+		<where>
+			stuid=#{stuid} and pwd=#{pwd}
+		</where>
+	</update>
+	<select id="selectall" resultMap="student" parameterType="Integer">
+		select *
+		from student ORDER BY stuid DESC limit #{0},#{1}
+	</select>
+
+	<select id="selectcount" resultType="Integer">
+		select count(stuid) from student
+	</select>
+
+	<select id="Studentinformation" resultMap="student">
+		select * from student where stuid=#{stuid}
+	</select>
+
+	<update id="UpdatePhone">
+		update student set phone=#{1} where stuid = #{0}
+	</update>
+
+	<update id="UpdateGrade">
+		update student set grade=#{grade1} where grade=#{grade} and major = #{major}
+	</update>
+
+	<update id="updatephoto">
+		update student set photo=#{photo} where stuid = #{stuid}
+	</update>
+
+	<select id="SelectPhoto" resultType="String">
+		select photo from student where stuid = #{stuid}
+	</select>
+
+	<select id="Selectcondition" resultMap="student">
+		select * from student
+		<where>
+			<if test="stuid!=null and stuid!=''" >
+				stuid=#{stuid}
+			</if>
+			<if test="name!=null and name!=''" >
+				and name = #{name}
+			</if>
+			<if test="sex!=null and sex!=''">
+				and sex = #{sex}
+			</if>
+			<if test="grade!=null and grade!='' ">
+				and grade = #{grade}
+			</if>
+			<if test="education!=null and education!=''">
+				and education = #{education}
+			</if>
+			<if test="Nation!=null and Nation!=''">
+				and Nation=#{Nation}
+			</if>
+			<if test="major!=null and major!=''">
+				and major = #{major}
+			</if> 
+		</where>
+	</select>
+	<select id="SelectCourse" resultMap="student">
+		select cname from course a  where  a.grade = 'One' and a.major = 'Computer'
+	</select>
+	
+	<select id="SelectStuid" resultMap="student">
+		select * from student
+	</select>
+	
+	<select id="CheckPwd" resultType="String">
+		select pwd from student where stuid = #{stuid}
+	</select>
+	
+	<select id="selectclassespeople" resultMap="student">
+		select name,stuid,sex,grade,major from classes a,student b where a.Classid=b.Classid and b.Classid = #{Classid}
+	</select>
+	
+	<select id="selectclass" resultMap="student">
+		select * from student where Classid=#{Classid}
+	</select>
+	
+	<select id="selectdata" resultType="pojo.Studydata">
+		select * from studydata  ORDER BY id DESC limit #{0},#{1}
+	</select>
+	
+	<select id="selectdatecount" resultType="Integer">
+		select count(*) from studydata
+	</select>
+	
+	<select id="test" resultType="pojo.test">
+		select * from test where cid=#{0}
+	</select>
+</mapper>

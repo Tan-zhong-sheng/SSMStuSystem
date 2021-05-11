@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.Scope">
+	<resultMap type="pojo.scope" id="Scope">
+		<result property="scope" column="scope" />
+		<result property="grade" column="grade" />
+		<result property="course.cid" column="cid" />
+		<result property="course.cname" column="cname" />
+		<result property="course.grade" column="grade"/>
+		<result property="student.stuid" column="stuid" />
+		<result property="student.name" column="name" />
+		<result property="student.pwd" column="pwd" />
+		<result property="student.phone" column="phone" />
+	</resultMap>
+	
+	<select id="select" resultMap="Scope">
+		select * from scope
+		<where>
+			stuid=#{stuid}
+		</where>
+	</select>
+
+	<insert id="InsertScope" parameterType="pojo.scope">
+		insert into scope(scope,cid,stuid,teacherid,grade,status)
+		values(#{scope},#{cid},#{stuid},#{teacherid},#{grade},#{status})
+	</insert>
+
+	<select id="selectall" resultMap="Scope" parameterType="Integer">
+		select a.stuid,b.scope,c.cname,b.grade,b.teacherid,c.cid,b.status
+		from student a,scope b,course c where a.stuid=b.stuid and
+		b.cid=c.cid
+		ORDER BY a.stuid
+		limit #{0},#{1}
+	</select>
+	
+	<select id="SelectStudentScope" resultMap="Scope" parameterType="Integer">
+		select *
+		from student a,scope b,course c where a.stuid=b.stuid and
+		b.cid=c.cid and a.stuid=#{stuid} 
+	</select>
+
+	<select id="selectcount" resultType="Integer">
+		select count(*) from scope
+	</select>
+	
+	<delete id="Delete">
+		delete from scope
+		<where>
+			stuid=#{stuid} and cid = #{cid}
+		</where>
+	</delete>
+
+	<update id="updateSc">
+		update scope set scope=#{1} where stuid=#{0} and cid=#{2}
+	</update>
+	
+	<select id="ExportScope" resultMap="Scope">
+	    select a.stuid,b.scope,c.cname,b.grade,b.teacherid
+		from student a,scope b,course c where a.stuid=b.stuid and
+		b.cid=c.cid
+	</select>
+	
+	<select id="choiseselect" resultMap="Scope">
+		select a.stuid,b.scope,c.cname,b.grade,b.teacherid,b.status
+		from student a,scope b,course c
+		<where>
+		a.stuid=b.stuid and
+		b.cid=c.cid 
+		<if test="stuid!=null and stuid!=''">
+			and b.stuid = #{stuid}
+		</if>
+		<if test="cid!=null and cid!=''">
+			and b.cid = #{cid}
+		</if>
+		<if test="teacherid!=null and teacherid!=''">
+			and b.teacherid = #{teacherid}
+		</if>
+		<if test="grade!=null and grade!=''">
+			and b.grade = #{grade}
+		</if>
+		<if test="scope!=null and scope!=''">
+			and scope &gt;= #{scope} 
+		</if>
+		<if test="scope1!=null and scope1!=''">
+			and scope &lt;= #{scope1} 
+		</if>
+		limit #{start},#{end}
+		</where>
+	</select>
+	
+		<select id="choisecount" resultType="Integer">
+		select count(*)
+		from student a,scope b,course c
+		<where>
+		a.stuid=b.stuid and
+		b.cid=c.cid 
+		<if test="stuid!=null and stuid!=''">
+			and b.stuid = #{stuid}
+		</if>
+		<if test="cid!=null and cid!=''">
+			and b.cid = #{cid}
+		</if>
+		<if test="teacherid!=null and teacherid!=''">
+			and b.teacherid = #{teacherid}
+		</if>
+		<if test="grade!=null and grade!=''">
+			and b.grade = #{grade}
+		</if>
+		<if test="scope!=null and scope!=''">
+			and scope &gt;= #{scope} 
+		</if>
+		<if test="scope1!=null and scope1!=''">
+			and scope &lt;= #{scope1} 
+		</if>
+		</where>
+	</select>
+	
+	<select id="selectscope" resultType="pojo.scope">
+		select * from scope where cid = #{0} and stuid = #{1} 
+	</select>
+	
+	<update id="updateteacherscope">
+		update scope set scope =#{2} where cid = #{0} and stuid=#{1}
+	</update>
+	
+	<update id="updatescopestatus">
+		update scope set status = 5 where stuid=#{0} and cid =#{1}
+	</update>
+	
+	<select id="passnum" resultType="Integer">
+		select count(*) from scope a,student b where a.stuid=b.stuid and b.Classid=#{0} and a.scope>=60 and cid = #{1}
+	</select>
+	<select id="nopassnum" resultType="Integer">
+		select count(*) from scope a,student b where a.stuid=b.stuid and b.Classid=#{0} and a.scope&lt;60 and cid = #{1}
+	</select>
+</mapper>

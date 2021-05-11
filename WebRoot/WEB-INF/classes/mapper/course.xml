@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.Course">
+<insert id ="Cinsert" parameterType="pojo.course" useGeneratedKeys="true" keyProperty="cid">
+	insert into course(cname,major,grade) values(#{cname},#{major},#{grade})
+</insert>
+<select id="Cselect" resultType="pojo.course">
+	select * from course 
+	<where>
+		cid=#{cid}
+	</where>
+</select>
+
+<select id="selectall" resultType="pojo.course" parameterType="Integer">
+	select * from course ORDER BY cid limit #{0},#{1}
+</select>
+
+<select id="selectcount" resultType="Integer">
+	select count(cid) from course
+</select>
+<delete id="deleteCourse">
+	delete from course where cid=#{cid}
+</delete>
+
+<select id="SelectStudent" resultType="pojo.student">
+	select a.stuid,a.name from student a,sc b, course c 
+	where a.stuid=b.stuid and b.cid = c.cid and c.cid=#{2} limit #{0},#{1}
+</select>
+
+<select id="ScstudentCount" resultType="Integer">
+	select count(a.stuid) from student a,sc b,course c where a.stuid = b.stuid and b.cid = c.cid and c.cid = #{cid} 
+</select>
+
+<select id="Choice" resultType="String">
+	select major from student where stuid = #{stuid}
+</select>
+
+<select id="SelectStudentCourse" resultType="String">
+	select cname from course where grade=#{0} and major = #{1}
+</select>
+
+<select id="SelectCid" resultType="pojo.course">
+	select * from course
+</select>
+
+<select id="SelectExistingCid" resultType="pojo.course">
+	select cid,cname from course where major != #{2} limit #{0},#{1}
+</select>
+
+<select id="Count" resultType="Integer">
+	select count(*) from course where major!=#{major}
+</select>
+
+<select id="Subject" resultType="Integer">
+	select a.cid from sc a ,student b, course c  where a.stuid=b.stuid and a.cid=c.cid and a.status='0' and b.stuid = #{stuid} 
+</select>
+
+
+
+<select id="selectteacher" resultType="pojo.teacher">
+	select teacherid,tname from teacher where major = #{0}
+</select>
+
+<select id="selectclass" resultType="pojo.Classes">
+	select Classid,Classname from classes
+</select>
+</mapper>

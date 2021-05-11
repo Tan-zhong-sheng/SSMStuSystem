@@ -1,0 +1,88 @@
+body {
+	margin: 0px;
+	padding: 0px;
+}
+a{
+	text-decoration:none;
+	}
+	a:VISITED{
+		color: black;
+	}
+	a.h:HOVER{
+		cursor: pointer;
+	}
+
+.left {
+	background: #313541;
+	width: 20%;
+	float: left;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	overflow-y:auto
+}
+
+.top {
+	width: 80%;
+	float: right;
+	height: 100px;
+	line-height: 100px;
+	border-bottom: 1px solid #b0cdff;
+}
+
+.content {
+	float: right;
+	width: 80%;
+	text-align: center;
+	font-size: 40px;
+	height: 785px;
+}
+
+.leftTiyle {
+	font-size: 25px;
+	padding-left: 30px;
+	font-weight: 600;
+	color: #545454;
+	float: left;
+}
+
+.thisUser {
+	float: right;
+	margin-right: 30px;
+}
+
+.bigTitle {
+	background: #3d598a;
+	color: #fff;
+	height: 100px;
+	line-height: 100px;
+	text-align: center;
+	font-size: 24px;
+	font-family: -webkit-body;
+}
+
+.lines .active {
+	background: #272a34;
+	color: #fff;
+}
+.lines img{
+    width: 23px;
+    vertical-align: middle;
+    margin-bottom: 4px;
+    margin-right: 9px;
+}
+.lines div {
+	height: 70px;
+	line-height: 70px;
+	padding-left: 50px;
+	color: #707783;
+}
+
+.lines div:hover {/* 当鼠标悬浮在上方时 */
+	cursor: pointer;/*一只手  */
+	color: #FFFFFF;
+}
+.meau{
+	width: 100%;
+	height: 100%;
+}

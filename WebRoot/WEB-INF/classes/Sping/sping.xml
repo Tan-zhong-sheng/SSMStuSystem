@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd  
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.2.xsd
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+	<context:property-placeholder location="classpath:JDBC.properties" />
+	<context:component-scan base-package="pojo"></context:component-scan>
+	<context:component-scan base-package="Service"></context:component-scan>
+	
+	
+	<bean id="JDBC" class="com.alibaba.druid.pool.DruidDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="initialSize" value="5" />
+		<property name="minIdle" value="5" />
+		<property name="maxActive" value="100" />
+
+	</bean>
+
+	<!--2.配置mybatis的SqlSession的工厂: SqlSessionFactoryBean dataSource:引用数据源 -->
+	<bean id="sqlsession" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="JDBC" />
+		<property name="configLocation" value="classpath:Mybatis-config.xml" />
+		<!--检查xml文件所在package名称是否和Mapper interface所在的包名一一对应； -->
+		<property name="mapperLocations" value="classpath:mapper/*.xml"></property>
+	</bean>
+	<!-- 3. 自动扫描mybatis映射文件和接口的包 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="mapper"></property>
+
+	</bean>
+	<bean id="dataSourceTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="JDBC" />
+	</bean>
+	<tx:annotation-driven transaction-manager="dataSourceTransactionManager" />
+</beans>

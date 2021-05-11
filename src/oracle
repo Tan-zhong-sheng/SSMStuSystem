@@ -1,0 +1,53 @@
+create table student(
+stuid number(20) primary key,
+name varchar2(20)not null,
+pwd varchar2(20) not null,
+phone varchar2(30)
+);
+
+create table course(
+cid number(20) primary key,
+cname varchar(30) not null
+);
+
+create table scope(
+scope number(20),
+cid number(20) not null,
+stuid number(20) not null,
+FOREIGN key(cid) references course(cid),
+FOREIGN KEY (stuid) REFERENCES student(stuid)
+);
+
+create sequence sql_C
+increment by 1
+start with 1
+maxvalue 999999999;
+
+
+
+create sequence sql_S
+increment by 1
+start with 1
+maxvalue 999999999;
+
+select sql_C.nextval from sys.dual;
+
+select sql_S.nextval from sys.dual;
+
+create table governor(
+governorid number(20) primary key,
+pwd varchar2(20) not null,
+truename varchar2(30),
+leave number(20) not null
+)
+
+insert into governor values(1000,'tzs','tzs',1);
+
+insert into governor values(1001,'king','tzs',3);
+
+insert into governor values(1002,'lebron','tzs',5);
+
+CREATE VIEW grade AS
+select a.stuid,b.scope,b.cid from student a, scope b where a.stuid =b.stuid;
+
+insert into scope values(70,26,3);

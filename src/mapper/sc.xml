@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="mapper.Sc">
+ 	<insert id="addSc">
+		insert into sc values(#{stuid},#{cid},#{grade},#{status}); 	
+ 	</insert>
+ 	
+ 	<select id="SelectSc" resultType="Integer">
+ 		select cid from course where major = #{0} and grade = #{1}
+ 	</select>
+ 	<delete id="DeleteGrade">
+ 		delete from sc where cid = #{cid} and status=#{status}
+ 	</delete>
+ 	<select id="SelectStuid" resultType="Integer">
+ 		select stuid from student where major = #{0} and grade = #{1}
+ 	</select>
+ 	
+ 	<select id="SelectCid" resultType="Integer"> 
+ 		select cid from course where major=#{major}
+ 	</select>
+ 	
+ 	<delete id="DeleteElective">
+ 		delete from sc where stuid = #{stuid} and cid = #{cid}
+ 	</delete>
+ 	
+ 	<select id="selectcid" resultType="Integer">
+	select cid from sc  where cid=#{0} and stuid=#{1}
+	</select>
+ 	
+ 	<select id="selectcidstatus" resultType="String">
+ 		select status from crousestatus 
+ 	</select>
+ 	
+ 	<update id="updatecidstatus">
+ 		update crousestatus set status='1' 
+ 	</update>
+ 	<update id="closecidstatus">
+ 		update crousestatus set status='0' 
+ 	</update>
+ 	
+ 	<select id="selecttest" resultType="String">
+ 		select test from crousestatus
+ 	</select>
+ 	<update id="opentest">
+ 		update crousestatus set test='1'
+ 	</update>
+ 	<update id="closetest">
+ 		update crousestatus set test='0'
+ 	</update>
+ </mapper>

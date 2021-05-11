@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- 命名空间
+  		id-标识符
+  		resultType=返回类型
+  		如果用接口实现的话要mapper要用接口全类名
+  		Select id 与接口方法名绑定
+   -->
+   <!-- Mybatis有多个参数传入时需要用数字表明顺序 -->
+   
+<mapper namespace="mapper.mapper">
+
+    <select id="governorLogin" resultType="pojo.governor">
+    	select * from governor where governorid = #{0} and pwd =#{1}
+    </select>
+
+       <select id="selectleave" resultType="Integer">
+    	select grade from governor where governorid = #{governorid}
+    </select>
+    <update id="governolupdate">
+    	update governor
+    	<set>
+    		pwd=#{1}
+    	</set>
+    	<where>
+    		governorid=#{0}
+    	</where>
+    </update>
+    
+    <select id="Code" resultType="pojo.photoverification">
+    	select * from photoVerification where pid = #{pid}
+    </select>
+    
+
+</mapper>

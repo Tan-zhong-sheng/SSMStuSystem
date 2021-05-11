@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.Classess">
+	<resultMap type="pojo.Classes" id="Classes">
+		<id column="Classid" property="Classid" />
+		<result column="Classname" property="Classname" />
+		<result column="Classnumber" property="Classnumber" />
+		<collection property="stu" ofType="pojo.student">
+			<id column="stuid" property="stuid" />
+			<result column="name" property="name" />
+		</collection>
+	</resultMap>
+	<insert id="insertClass" useGeneratedKeys="true" keyProperty="Classid">
+		insert into classes(Classname,Classnumber)
+		values(#{Classname},#{Classnumber})
+	</insert>
+	<select id="SelectClassid" resultType="Integer">
+		select Classid from classes
+	</select>
+	<select id="ClassInfo" resultType="pojo.Classes">
+		select * from classes ORDER BY Classid limit #{0},#{1}
+	</select>
+	<select id="Count" resultType="Integer">
+		select count(*) from classes
+	</select>
+	<delete id="Delete">
+		delete from classes where Classid=#{Classid}
+	</delete>
+
+	<select id="selectClassesnumber" resultType="pojo.SelectScope">
+		SELECT
+		stu.stuid,
+		NAME,
+		e.cname,
+		scope
+		FROM
+		student stu,
+		scope sc,
+		course e
+		WHERE
+		sc.stuid = stu.stuid
+		AND sc.cid = e.cid
+		AND stu.Classid = #{0}
+		AND sc.cid = #{1}
+	</select>
+
+	<select id="SelectStudentMaxNum" resultType="Integer">
+		select Classnumber from classes where Classid = #{Classid}
+	</select>
+	
+	<select id="SelectStudentNum" resultType="Integer">
+		select count(Classid) from student where Classid=#{Classid}
+	</select>
+	
+</mapper>
